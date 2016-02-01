@@ -7,6 +7,7 @@ angular.module("LiveSearch", ["ng"])
         replace: true,
         scope: {
             liveSearchCallback: '=',
+            liveSearchItem: '=',
             liveSearchSelect: '=?',
             liveSearchSelectCallback: '=',
             blur: '&ngBlur',
@@ -36,6 +37,7 @@ angular.module("LiveSearch", ["ng"])
             scope.$watch("selectedIndex", function(newValue, oldValue) {
                 var item = scope.results[newValue];
                 if(item) {
+                    scope.liveSearchItem = item;
                     if(attrs.liveSearchSelectCallback) {
                         var value = scope.liveSearchSelectCallback.call(null, {items: scope.results, item: item});
                         element.val(value);
