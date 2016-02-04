@@ -1,7 +1,13 @@
 angular-live-search
 ===========
 
-##Usage
+## Usage
+
+Require lodash.
+
+```html
+<script src='/bower_components/lodash/dist/lodash.js'></script>
+```
 
 ### Markup
 

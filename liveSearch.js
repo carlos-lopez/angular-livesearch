@@ -7,7 +7,6 @@ angular.module("LiveSearch", ["ng"])
         replace: true,
         scope: {
             liveSearchCallback: '=',
-            liveSearchItem: '=',
             liveSearchSelect: '=?',
             liveSearchSelectCallback: '=',
             blur: '&ngBlur',
@@ -37,7 +36,6 @@ angular.module("LiveSearch", ["ng"])
             scope.$watch("selectedIndex", function(newValue, oldValue) {
                 var item = scope.results[newValue];
                 if(item) {
-                    scope.liveSearchItem = item;
                     if(attrs.liveSearchSelectCallback) {
                         var value = scope.liveSearchSelectCallback.call(null, {items: scope.results, item: item});
                         element.val(value);
@@ -56,14 +54,26 @@ angular.module("LiveSearch", ["ng"])
                 }
             });
 
+            function clickHandler(event) {
+                var liveSearchClasses = attrs.class.split(' ');
+                var eventClasess = event.target.classList;
+                var isLiveSearch = _.all(liveSearchClasses,
+                                        _.partial(_.contains, eventClasess));
+                if(!isLiveSearch) {
+                    scope.visible = false;
+                }
+                scope.$apply();
+            }
             scope.$watch("visible", function(newValue, oldValue) {
                 if(newValue === false) {
+                    angular.element('body').unbind("click", clickHandler);
                     return;
                 }
                 scope.width = element[0].clientWidth;
                 var offset = getPosition(element[0]);
-                scope.top = offset.y + element[0].clientHeight + 1 + 'px';
+                scope.top = element[0].clientHeight + 1 + 'px';
                 scope.left = offset.x + 'px';
+                angular.element('body').bind("click", clickHandler);
             });
 
             element[0].onkeydown = function (e) {
@@ -79,7 +89,7 @@ angular.module("LiveSearch", ["ng"])
                 //keyup
                 else if (e.keyCode == 38) {
                     if(scope.selectedIndex === 0) {
-                        scope.selectedIndex = scope.results.length - 1;    
+                        scope.selectedIndex = scope.results.length - 1;
                     }
                     else if(scope.selectedIndex == -1) {
                         scope.selectedIndex = 0;
@@ -134,7 +144,7 @@ angular.module("LiveSearch", ["ng"])
             var getPosition = function (element) {
                 var xPosition = 0;
                 var yPosition = 0;
-              
+
                 while (element && !element.classList.contains("modal-dialog")) {
                     xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
                     yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
@@ -148,7 +158,7 @@ angular.module("LiveSearch", ["ng"])
             var searchPopup = $compile(template)(scope);
 
             /** FIND THE PARENT MODAL TO APPEND TO, OTHERWISE APPEND TO BODY **/
-            var parentElement = document.getElementsByClassName("modal-dialog")[0] || document.body; 
+            var parentElement = document.getElementsByClassName("modal-dialog")[0] || document.body;
             parentElement.appendChild(searchPopup[0]);
 
         }
