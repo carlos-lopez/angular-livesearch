@@ -127,14 +127,16 @@ angular.module("LiveSearch", ["ng"])
                 }
                 timeout = $timeout(function () {
                     var results = [];
-                    var promise = scope.liveSearchCallback.call(null, search_string);
-                    promise.then(function (dataArray) {
+                    scope.liveSearchCallback.call(null, search_string)
+                    .then(function (dataArray) {
                         if (dataArray) {
                             results = dataArray.slice(0, (scope.liveSearchMaxResultSize || 20) - 1);
                         }
-                        scope.visible = true;
-                    });
-                    promise.finally(function() {
+                        if (results && results.length > 0) {
+                            scope.visible = true;
+                        }
+                    })
+                    .finally(function() {
                         scope.selectedIndex = -1;
                         scope.results = results.filter(function(elem, pos) {
                             return results.indexOf(elem) == pos;
