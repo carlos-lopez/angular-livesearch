@@ -15,6 +15,7 @@ angular.module("LiveSearch", ["ng"])
             liveSearchWaitTimeout: '=?',
             liveSearchMaxResultSize: '=?',
             liveSearchMaxlength: '=?',
+            liveSearchClassInsert: '@?',
             placeholder: "@"
         },
         template: "<input type='text' placeholder='{{placeholder}}' ng-blur='blur'/>",
@@ -144,12 +145,13 @@ angular.module("LiveSearch", ["ng"])
                     });
                 }, scope.liveSearchWaitTimeout || 100);
             };
+            var classInsert = _.get(scope, 'liveSearchClassInsert', 'modal-dialog');
 
             var getPosition = function (element) {
                 var xPosition = 0;
                 var yPosition = 0;
 
-                while (element && !element.classList.contains("modal-dialog")) {
+                while (element && !element.classList.contains(classInsert)) {
                     xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
                     yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
                     element = element.offsetParent;
@@ -162,7 +164,7 @@ angular.module("LiveSearch", ["ng"])
             var searchPopup = $compile(template)(scope);
 
             /** FIND THE PARENT MODAL TO APPEND TO, OTHERWISE APPEND TO BODY **/
-            var parentElement = document.getElementsByClassName("modal-dialog")[0] || document.body;
+            var parentElement = document.getElementsByClassName(classInsert)[0] || document.body;
             parentElement.appendChild(searchPopup[0]);
 
         }
