@@ -74,7 +74,6 @@ angular.module("LiveSearch", ["ng"])
                 }
                 scope.width = element[0].clientWidth;
                 var offset = getPosition(element[0]);
-                scope.top = element[0].clientHeight + 1 + 'px';
                 scope.left = offset.x + 'px';
                 angular.element('body').bind("click", clickHandler);
             });
