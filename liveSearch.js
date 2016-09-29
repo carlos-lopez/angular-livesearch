@@ -60,9 +60,9 @@ angular.module("LiveSearch", ["ng"])
             function clickHandler(event) {
                 var liveSearchClasses = attrs.class.split(' ');
                 var eventClasess = event.target.classList;
-                var isLiveSearch = _.all(liveSearchClasses,
-                                        _.partial(_.contains, eventClasess));
-                if(!isLiveSearch) {
+                var isLiveSearch = !eventClasess && _.all(liveSearchClasses,
+                                    _.partial(_.contains, eventClasess));
+                if(!isLiveSearch ) {
                     scope.visible = false;
                 }
                 scope.$apply();
