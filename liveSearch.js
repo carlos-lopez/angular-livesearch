@@ -135,6 +135,8 @@ angular.module("LiveSearch", ["ng"])
                         }
                         if (results && results.length > 0) {
                             scope.visible = true;
+                        } else {
+                            scope.visible = false;
                         }
                     })
                     .finally(function() {
