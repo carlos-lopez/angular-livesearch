@@ -16,9 +16,10 @@ angular.module("LiveSearch", ["ng"])
             liveSearchMaxResultSize: '=?',
             liveSearchMaxlength: '=?',
             liveSearchClassInsert: '@?',
+            liveSearchInputType: "@",
             placeholder: "@"
         },
-        template: "<input type='text' placeholder='{{placeholder}}' ng-blur='blur'/>",
+        template: "<input type='{{liveSearchInputType}}' placeholder='{{placeholder}}' ng-blur='blur'/>",
         link: function (scope, element, attrs, controller) {
             var timeout;
 
